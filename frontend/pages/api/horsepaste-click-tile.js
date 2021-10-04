@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import format from '../../modules/format'
 
-export default HorsepasteClickTile = async (req, res) => {
+export default async (req, res) => {
     console.log("click card", req.query.id, req.query.index)
 
     const horsepaste = await fetch(`https://www.horsepaste.com/guess`, {
