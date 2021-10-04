@@ -72,7 +72,7 @@ function Header({ remainingBlue, remainingRed, currentTeam }) {
             </a>
 
             <a href="#" className="nes-badge" style={{ width: "15em" }}>
-                <span className="is-dark">{currentTeam}'s turn</span>
+                <span className="is-dark">{currentTeam}&apos;s turn</span>
             </a>
 
             <a href="#" className="nes-badge">

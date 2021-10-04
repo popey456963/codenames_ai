@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import format from '../../modules/format'
 
-export default async (req, res) => {
+export default HorsepasteEndTurn = async (req, res) => {
     console.log("end turn", req.query.id)
 
 

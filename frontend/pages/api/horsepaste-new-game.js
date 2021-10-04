@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import format from '../../modules/format'
 
-export default async (req, res) => {
+export default HorsepasteNewGame = async (req, res) => {
     console.log("text game", req.query.id)
 
     const horsepaste = await fetch(`https://www.horsepaste.com/next-game`, {

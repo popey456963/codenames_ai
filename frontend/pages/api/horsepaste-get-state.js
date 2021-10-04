@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import format from '../../modules/format'
 
-export default async (req, res) => {
+export default HorsepasteGetState = async (req, res) => {
     console.log("get state", req.query.id, req.query.state_id || '(no state id)')
 
     // console.log('making game state request', req.query.id, req.query.state_id)
