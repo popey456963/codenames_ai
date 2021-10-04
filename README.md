@@ -27,7 +27,7 @@
     Automatically generate codenames clues for a given board
     <br />
     <br />
-    <b><a href="https://codenames.femto.dev">View Demo</a></b>
+    <b><a href="https://codenames.feud.today">View Demo</a></b>
     ·
     <a href="https://github.com/popey456963/codenames_ai/issues">Report Bug</a>
     ·
@@ -55,7 +55,7 @@
 
 ## About The Project
 
-[![Codenames Screenshot][product-screenshot]](https://codenames.femto.dev)
+[![Codenames Screenshot][product-screenshot]](https://codenames.feud.today)
 
 We use GloVe (Global Vectors for Word Representations), a way of converting a word / concept into a vector. By comparing these vectors we can compute clues to give in codewords.
 

@@ -125,7 +125,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let king_queen_similarity = vector_similarity(&"king".to_string(), &"queen".to_string());
     let dead_cactus_similarity = vector_similarity(&"dead".to_string(), &"cactus".to_string());
 
-    println!("number of items found are {}", VECTORS_GLOBAL.gloves.keys().len());
+    println!(
+        "number of items found are {}",
+        VECTORS_GLOBAL.gloves.keys().len()
+    );
     println!(
         "magnitude of 'test' is {}",
         VECTORS_GLOBAL.magnitudes.get("test").unwrap()
@@ -404,8 +407,8 @@ fn vector_similarity(word1: &String, word2: &String) -> f32 {
     let vec2 = VECTORS_GLOBAL.gloves.get(word2).unwrap();
 
     let product = dot_product(vec1, vec2);
-    let denominator =
-        VECTORS_GLOBAL.magnitudes.get(word1).unwrap() * VECTORS_GLOBAL.magnitudes.get(word2).unwrap();
+    let denominator = VECTORS_GLOBAL.magnitudes.get(word1).unwrap()
+        * VECTORS_GLOBAL.magnitudes.get(word2).unwrap();
 
     product / denominator
 }
@@ -441,7 +444,10 @@ fn score_clue(
     key_mag: f32,
 ) -> Option<ClueScore> {
     // don't process words with same stems
-    if stems.iter().any(|stem| *stem == (&VECTORS_GLOBAL).stems[key]) {
+    if stems
+        .iter()
+        .any(|stem| *stem == (&VECTORS_GLOBAL).stems[key])
+    {
         return None;
     }
 
@@ -464,7 +470,7 @@ fn score_clue(
                 i,
                 vector_similarity_by_vec(
                     key_vec,
-                        &state.tile_vecs[i].1,
+                    &state.tile_vecs[i].1,
                     key_mag,
                     state.tile_vecs[i].0,
                 ),
@@ -546,14 +552,19 @@ fn calculate_clue(board: &Board, number: usize) -> Vec<ClueScore> {
 
     let tile_vecs = unpicked_tiles
         .iter()
-        .map(|tile| (*VECTORS_GLOBAL.magnitudes.get(&tile.word).unwrap(), VECTORS_GLOBAL.gloves.get(&tile.word).unwrap().clone()))
+        .map(|tile| {
+            (
+                *VECTORS_GLOBAL.magnitudes.get(&tile.word).unwrap(),
+                VECTORS_GLOBAL.gloves.get(&tile.word).unwrap().clone(),
+            )
+        })
         .collect::<Vec<(f32, Vec<f32>)>>();
 
     let state = State {
         current_team: board.current_team,
         unpicked_tiles: unpicked_tiles,
         assassin_index: assassin_index,
-        tile_vecs: tile_vecs
+        tile_vecs: tile_vecs,
     };
 
     let mut best_clues: Vec<ClueScore> = VECTORS_GLOBAL
