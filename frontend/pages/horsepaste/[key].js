@@ -6,7 +6,7 @@ import memoize from 'memoizee'
 import Board from '../../components/Board'
 
 import game from "../../styles/Game.module.css"
-import { Head } from 'next/head'
+import Head from 'next/head'
 
 async function getHorsepasteState(key, stateId) {
     console.log('updated called', key, stateId)

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import common from '../styles/Common.module.css'
 import Spacer from "react-spacer";
-import { Head } from "next/head";
+import Head from 'next/head'
 
 export default function HorsepasteMenu() {
     const [key, setKey] = useState(undefined)
