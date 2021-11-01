@@ -34,7 +34,7 @@ static FILE: &str = "../data/glove.840B.300d.txt";
 const WORDS: usize = 2196017;
 const DIMENSIONS: usize = 300;
 
-#[derive(Deserialize, Debug, PartialEq, Clone, Copy)]
+#[derive(Deserialize, Debug, PartialEq, Clone, Copy, Serialize)]
 #[serde(rename_all = "snake_case")]
 enum Team {
     Civilian,
@@ -43,7 +43,7 @@ enum Team {
     Blue,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Serialize)]
 struct Tile {
     word: String,
     team: Team,
@@ -87,6 +87,12 @@ struct ClueScore {
     score: f32,
 }
 
+#[derive(Serialize, Debug)]
+struct ConceptNotFoundError<'a> {
+    error: String,
+    concepts: Vec<&'a Tile>,
+}
+
 struct State {
     current_team: Team,
     unpicked_tiles: Vec<Tile>,
@@ -101,6 +107,19 @@ lazy_static! {
 #[post("/api/v1/word", data = "<board>")]
 fn make_move(board: Json<Board>) -> JsonValue {
     let now = Instant::now();
+
+    let unpicked_tiles: Vec<&Tile> = board
+        .tiles
+        .iter()
+        .filter(|tile| !VECTORS_GLOBAL.gloves.contains_key(&tile.word))
+        .collect();
+
+    if unpicked_tiles.len() > 0 {
+        return json!(ConceptNotFoundError {
+            error: "ConceptsNotFound".to_string(),
+            concepts: unpicked_tiles
+        });
+    }
 
     let clue_scores = &calculate_clue(&board, 10);
 

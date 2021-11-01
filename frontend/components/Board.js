@@ -84,7 +84,6 @@ function Header({ remainingBlue, remainingRed, currentTeam }) {
 
 export default function Board({ state, spymaster = true, setIsPlaying, onNewGame, onEndTurn, onTileClick }) {
     const { tiles, currentTeam } = state
-
     const router = useRouter()
 
     const remainingRed = countRemaining(tiles, 'red')
@@ -93,6 +92,7 @@ export default function Board({ state, spymaster = true, setIsPlaying, onNewGame
     const [suggestions, setSuggestions] = useState([])
     const [suggestionsTeam, setSuggestionsTeam] = useState('blue')
     const [historicalClues, setHistoricalClues] = useState([])
+    const [error, setError] = useState(undefined)
 
     function goBack() {
         router.push('/')
@@ -103,8 +103,13 @@ export default function Board({ state, spymaster = true, setIsPlaying, onNewGame
 
         const newSuggestions = await getSuggestion(state)
 
-        setSuggestionsTeam(saveCurrentTeam)
-        setSuggestions(newSuggestions)
+        if (newSuggestions.error) {
+            setError(newSuggestions)
+        } else {
+            setError(undefined)
+            setSuggestionsTeam(saveCurrentTeam)
+            setSuggestions(newSuggestions)
+        }
     }
 
 
@@ -116,6 +121,9 @@ export default function Board({ state, spymaster = true, setIsPlaying, onNewGame
                 </div>
             </header>
             <main className={common.page_main}>
+                {error && <p class="nes-balloon from-left" style={{ width: "100%" }}>
+                    Error Concepts Not Found: {error.concepts.map(word => word.word).join(', ')}.  Please pick a new grid of words, or use a larger dataset (if available)
+                </p>}
                 <div className={game.page}>
                     <Header remainingRed={remainingRed} remainingBlue={remainingBlue} currentTeam={currentTeam} />
 
