@@ -6,6 +6,7 @@ import memoize from 'memoizee'
 import Board from '../../components/Board'
 
 import game from "../../styles/Game.module.css"
+import Head from 'next/head'
 
 async function getHorsepasteState(key, stateId) {
     console.log('updated called', key, stateId)
@@ -78,6 +79,9 @@ export default function Horsepaste() {
 
     return (
         <div className={game.container}>
+            <Head>
+                <title>Codenames AI</title>
+            </Head>
             <Board state={state} spymaster={!playing} setIsPlaying={setIsPlaying} onNewGame={onNewGame} onEndTurn={onEndTurn} onTileClick={onTileClick} />
         </div>
     )

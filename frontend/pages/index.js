@@ -18,6 +18,10 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Codenames AI</title>
+      </Head>
+
       <main className={styles.main}>
         <h1 className={styles.title}>
           Codenames AI
@@ -35,7 +39,7 @@ export default function Home() {
           </p>
 
           <p>
-            Try it out by providing a <a href="https://www.horsepaste.com/" target="_blank">Horsepaste</a> key or by entering in the words and types manually.
+            Try it out by providing a <a href="https://www.horsepaste.com/" rel="noreferrer" target="_blank">Horsepaste</a> key or by entering in the words and types manually.
           </p>
 
           <p>

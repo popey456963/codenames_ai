@@ -34,7 +34,7 @@ static FILE: &str = "../data/glove.840B.300d.txt";
 const WORDS: usize = 2196017;
 const DIMENSIONS: usize = 300;
 
-#[derive(Deserialize, Debug, PartialEq, Clone, Copy)]
+#[derive(Deserialize, Debug, PartialEq, Clone, Copy, Serialize)]
 #[serde(rename_all = "snake_case")]
 enum Team {
     Civilian,
@@ -43,7 +43,7 @@ enum Team {
     Blue,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug, Clone, Serialize)]
 struct Tile {
     word: String,
     team: Team,
@@ -87,6 +87,12 @@ struct ClueScore {
     score: f32,
 }
 
+#[derive(Serialize, Debug)]
+struct ConceptNotFoundError<'a> {
+    error: String,
+    concepts: Vec<&'a Tile>,
+}
+
 struct State {
     current_team: Team,
     unpicked_tiles: Vec<Tile>,
@@ -101,6 +107,19 @@ lazy_static! {
 #[post("/api/v1/word", data = "<board>")]
 fn make_move(board: Json<Board>) -> JsonValue {
     let now = Instant::now();
+
+    let unpicked_tiles: Vec<&Tile> = board
+        .tiles
+        .iter()
+        .filter(|tile| !VECTORS_GLOBAL.gloves.contains_key(&tile.word))
+        .collect();
+
+    if unpicked_tiles.len() > 0 {
+        return json!(ConceptNotFoundError {
+            error: "ConceptsNotFound".to_string(),
+            concepts: unpicked_tiles
+        });
+    }
 
     let clue_scores = &calculate_clue(&board, 10);
 
@@ -125,7 +144,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let king_queen_similarity = vector_similarity(&"king".to_string(), &"queen".to_string());
     let dead_cactus_similarity = vector_similarity(&"dead".to_string(), &"cactus".to_string());
 
-    println!("number of items found are {}", VECTORS_GLOBAL.gloves.keys().len());
+    println!(
+        "number of items found are {}",
+        VECTORS_GLOBAL.gloves.keys().len()
+    );
     println!(
         "magnitude of 'test' is {}",
         VECTORS_GLOBAL.magnitudes.get("test").unwrap()
@@ -404,8 +426,8 @@ fn vector_similarity(word1: &String, word2: &String) -> f32 {
     let vec2 = VECTORS_GLOBAL.gloves.get(word2).unwrap();
 
     let product = dot_product(vec1, vec2);
-    let denominator =
-        VECTORS_GLOBAL.magnitudes.get(word1).unwrap() * VECTORS_GLOBAL.magnitudes.get(word2).unwrap();
+    let denominator = VECTORS_GLOBAL.magnitudes.get(word1).unwrap()
+        * VECTORS_GLOBAL.magnitudes.get(word2).unwrap();
 
     product / denominator
 }
@@ -441,7 +463,10 @@ fn score_clue(
     key_mag: f32,
 ) -> Option<ClueScore> {
     // don't process words with same stems
-    if stems.iter().any(|stem| *stem == (&VECTORS_GLOBAL).stems[key]) {
+    if stems
+        .iter()
+        .any(|stem| *stem == (&VECTORS_GLOBAL).stems[key])
+    {
         return None;
     }
 
@@ -464,7 +489,7 @@ fn score_clue(
                 i,
                 vector_similarity_by_vec(
                     key_vec,
-                        &state.tile_vecs[i].1,
+                    &state.tile_vecs[i].1,
                     key_mag,
                     state.tile_vecs[i].0,
                 ),
@@ -546,14 +571,19 @@ fn calculate_clue(board: &Board, number: usize) -> Vec<ClueScore> {
 
     let tile_vecs = unpicked_tiles
         .iter()
-        .map(|tile| (*VECTORS_GLOBAL.magnitudes.get(&tile.word).unwrap(), VECTORS_GLOBAL.gloves.get(&tile.word).unwrap().clone()))
+        .map(|tile| {
+            (
+                *VECTORS_GLOBAL.magnitudes.get(&tile.word).unwrap(),
+                VECTORS_GLOBAL.gloves.get(&tile.word).unwrap().clone(),
+            )
+        })
         .collect::<Vec<(f32, Vec<f32>)>>();
 
     let state = State {
         current_team: board.current_team,
         unpicked_tiles: unpicked_tiles,
         assassin_index: assassin_index,
-        tile_vecs: tile_vecs
+        tile_vecs: tile_vecs,
     };
 
     let mut best_clues: Vec<ClueScore> = VECTORS_GLOBAL

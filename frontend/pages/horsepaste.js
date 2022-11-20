@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 
 import common from '../styles/Common.module.css'
 import Spacer from "react-spacer";
+import Head from 'next/head'
 
 export default function HorsepasteMenu() {
     const [key, setKey] = useState(undefined)
@@ -26,6 +27,10 @@ export default function HorsepasteMenu() {
 
     return (
         <div className={common.wrapper}>
+            <Head>
+                <title>Codenames AI</title>
+            </Head>
+
             <header>
                 <div onClick={goBack} className={common.close_button + " nes-pointer"}>
                     <i className="nes-icon close is-small"></i>
@@ -35,7 +40,7 @@ export default function HorsepasteMenu() {
                 <div className={common.container}>
                     <div>
                         <div className="nes-field">
-                            <label for="name_field">Horsepaste Key</label>
+                            <label htmlFor="name_field">Horsepaste Key</label>
                             <input value={key} onChange={e => setKey(e.target.value)} type="text" id="name_field" className="nes-input" placeholder={"beautiful-elk"} />
                         </div>
 
