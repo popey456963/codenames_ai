@@ -15,7 +15,7 @@ use rust_stemmers::{Algorithm, Stemmer};
 use serde::{Deserialize, Serialize};
 use std::fs::{File, OpenOptions};
 use std::io::{prelude::*, BufReader, BufWriter};
-use std::sync::{Arc, RwLock};
+use std::sync::{Arc};
 use std::time::Instant;
 
 use packed_simd::f32x16;
