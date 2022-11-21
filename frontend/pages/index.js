@@ -51,7 +51,7 @@ export default function Home() {
 
         <button type="button" className="nes-btn is-primary" onClick={startHorsepasteGame}>Join Horsepaste Game</button>
         <Spacer height='2rem' />
-        <button type="button" className="nes-btn is-disabled" onClick={() => { }}>Enter Tiles Manually</button>
+        <button type="button" className="nes-btn" onClick={startManualGame}>Enter Tiles Manually</button>
       </main>
     </div >
   )
