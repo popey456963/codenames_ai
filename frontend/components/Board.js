@@ -121,7 +121,7 @@ export default function Board({ state, spymaster = true, setIsPlaying, onNewGame
                 </div>
             </header>
             <main className={common.page_main}>
-                {error && <p class="nes-balloon from-left" style={{ width: "100%" }}>
+                {error && <p className="nes-balloon from-left" style={{ width: "100%" }}>
                     Error Concepts Not Found: {error.concepts.map(word => word.word).join(', ')}.  Please pick a new grid of words, or use a larger dataset (if available)
                 </p>}
                 <div className={game.page}>

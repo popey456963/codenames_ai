@@ -132,7 +132,7 @@ export default function Board({ state, team, spymaster = true, onType, setTeam, 
                 </div>
             </header>
             <main className={common.page_main}>
-                {error && <p class="nes-balloon from-left" style={{ width: "100%" }}>
+                {error && <p className="nes-balloon from-left" style={{ width: "100%" }}>
                     Error Concepts Not Found: {error.concepts.map(word => word.word).join(', ')}.  Please pick a new grid of words, or use a larger dataset (if available)
                 </p>}
                 <div className={game.page}>
@@ -172,19 +172,19 @@ export default function Board({ state, team, spymaster = true, onType, setTeam, 
                 <Spacer height="0.5rem" />
 
                 <div className={game.flex_container}>
-                    <a onClick={() => setTeam('assassin')} class="nes-badge">
-                        <span class={`is-dark ${team === 'assassin' ? 'is-white-selected' : ''}`}>Assassin</span>
+                    <a onClick={() => setTeam('assassin')} className="nes-badge">
+                        <span className={`is-dark ${team === 'assassin' ? 'is-white-selected' : ''}`}>Assassin</span>
                     </a>
-                    <a onClick={() => setTeam('blue')} class="nes-badge">
-                        <span class={`is-primary ${team === 'blue' ? 'is-selected' : ''}`}>Blue</span>
+                    <a onClick={() => setTeam('blue')} className="nes-badge">
+                        <span className={`is-primary ${team === 'blue' ? 'is-selected' : ''}`}>Blue</span>
                     </a>
-                    <a onClick={() => setTeam('civilian')} class="nes-badge">
-                        <span class={`is-warning ${team === 'civilian' ? 'is-selected' : ''}`}>Civilian</span>
+                    <a onClick={() => setTeam('civilian')} className="nes-badge">
+                        <span className={`is-warning ${team === 'civilian' ? 'is-selected' : ''}`}>Civilian</span>
                     </a>
-                    <a onClick={() => setTeam('red')} class="nes-badge">
-                        <span class={`is-error ${team === 'red' ? 'is-selected' : ''}`}>Red</span>
+                    <a onClick={() => setTeam('red')} className="nes-badge">
+                        <span className={`is-error ${team === 'red' ? 'is-selected' : ''}`}>Red</span>
                     </a>
-                    <a onClick={() => setTeam(undefined)} class="nes-badge">
+                    <a onClick={() => setTeam(undefined)} className="nes-badge">
                         <span>None</span>
                     </a>
                 </div>
